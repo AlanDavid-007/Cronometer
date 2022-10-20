@@ -1,29 +1,30 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component, useStat, SetStateAction } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image } from 'react-native';
 
 
-class Cronometer extends Component {
-   constructor (props){
-     super (props);
-    This.state = {
+class Clock extends Component {
+   constructor(props){
+     super(props);
+    this.state = {
        horas: 0,
        minutos: 0,
        segundos: 0,
        ativo: false,
-       voltas: []
+       voltas: [],
+       clock: 0
      },
-    pulsoDeClock = this.pulsoDeClock.bind(this);
-    iniciaRelogio = this.iniciaRelogio.bind(this);
-    pararRelogio = this.pararRelogio.bind(this);
-    marcarVolta - this.marcarVolta. bind(this);
-     zerarRelogio = this.zerarRelogio.bind(this);
+    this.pulsoDeClock = this.pulsoDeClock.bind(this);
+    this.iniciaRelogio = this.iniciaRelogio.bind(this);
+    this.pararRelogio = this.pararRelogio.bind(this);
+    this.marcarVolta = this.marcarVolta.bind(this);
+    this.zerarRelogio = this.zerarRelogio.bind(this);
     }
 
   iniciaRelogio(){
     if(!this.state.ativo){
-       this. setState({clock : setInterval(this.pulsoDeClock,1000)});
-      this. setState({ativo: true})
-    }
+       this.setState({clock : setInterval(this.pulsoDeClock,100)});
+      this.setState({ativo: true})
+     }
   }
   pulsoDeClock(){
     var h = this.state.horas;
@@ -33,17 +34,80 @@ class Cronometer extends Component {
        s++;
      } else {
        s = 0;
-                 I
-      if(m < 59) {
+      if(m < 59){
         m++;
       }else{
         m=0;
          h++
       }
+    } 
+    this.setState({segundos: s, minutos: m, horas: h})
+  }
+
+  pararRelogio(){
+    if(this.state.ativo){
+      clearInterval(this.state.clock);
+      this.setState({ativo:false});
     }
   }
+
+  marcarVolta(){
+  //fazer registros ao lado - criar i++ - arrumar viewbox das voltas - arrumar cores e testar app
+    var txt = this.formatar(this.state.horas) + ":" + this.formatar(this.state.minutos) + ":" + this.formatar(this.state.segundos)+"\n";
+    this.state.voltas.push(txt);
+    this.forceUpdate();
+  }
+
+  formatar(t){
+    return (t<10) ? "0"+t.toString() : t.toString();
+  }
+
+  zerarRelogio(){
+    this.pararRelogio();
+    this.setState({segundos:0,minutos:0, horas:0});
+
+    if(this.state.voltas.length>0){
+      this.state.voltas.push('-------------- \n');
+    }
 }
 
+  trocarTempo(){
+  }
+render()
+{
+  var txtHoras = this.formatar(this.state.horas);
+    var txtMinutos = this.formatar(this.state.minutos);
+    var txtSegundos = this.formatar(this.state.segundos);
+    var cronometerText = txtHoras + "h" + txtMinutos + "min" + txtSegundos + "s";
+  return(
+    <ScrollView>
+    <View style={styles.body}>
+            <Text style={styles.text}>Cronômetro</Text>
+      {/* <Image source={require('./images/relogio.png')} /> */}
+      <Text style={styles.clock}>{cronometerText}</Text>
+        <View style={styles.button_area}>
+          <TouchableOpacity style={styles.button} onPress={(this.state.ativo ? this.pararRelogio : this.iniciaRelogio)}>
+              <Text style={styles.button_text}>{(this.state.ativo ? 'Pausar' : 'Começar')}</Text>
+          </TouchableOpacity>
+ 
+          <TouchableOpacity style={styles.button} onPress={() => { this.zerarRelogio(); this.marcarVolta();}}>
+          <Text style={styles.button_text}>Limpar e Salvar</Text>
+          </TouchableOpacity>
+
+      </View>
+      <View style={styles.saveBox}>
+        <Text>
+          {this.state.voltas}
+        </Text>
+      </View>
+  </View>
+  
+  
+  </ScrollView>
+  )
+}
+}
+export default Clock;
   
 
 
@@ -133,25 +197,25 @@ class Cronometer extends Component {
 
 const styles = StyleSheet.create({
   body:{
-    paddingTop:25,
+    paddingTop:150,
     flex:1,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'#8E48FF'
   }, 
-  timer:{
+  clock:{
     color:'#00FCFF',
-    fontSize:80,
+    fontSize:30,
     fontWeight:'bold',
     backgroundColor:'transparent',
     marginTop: -150
   },
-  botaoArea:{
+  button_area:{
     flexDirection:'row',
-    height:40,
-    marginTop:80
+    height:50,
+    marginTop:120
   },
-  botao:{
+  button:{
     flex:1,
     justifyContent:'center',
     alignItems:'center',
@@ -161,9 +225,20 @@ const styles = StyleSheet.create({
     margin:10,
     borderRadius:5
   },
-  botaoText:{
+  button_text:{
     fontSize:17,
     fontWeight:'bold',
     color:'#FFFFFF'
+  },
+  text:{
+    fontSize: 30,
+    fontWeight:'bold',
+    color:'#FFFFFF',
+    paddingBottom: 25
+  },
+  saveBox:{
+    marginTop: 40,
+    flexDirection:'row',
+    height:248
   }
 });
