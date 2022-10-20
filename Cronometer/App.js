@@ -52,6 +52,7 @@ class Clock extends Component {
   }
 
   marcarVolta(){
+  //fazer nome da empresa em cima de tudo - 
   //fazer registros ao lado - criar i++ - arrumar viewbox das voltas - arrumar cores e testar app
     var txt = this.formatar(this.state.horas) + ":" + this.formatar(this.state.minutos) + ":" + this.formatar(this.state.segundos)+"\n";
     this.state.voltas.push(txt);
