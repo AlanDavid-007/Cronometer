@@ -6,11 +6,13 @@ class Clock extends Component {
    constructor(props){
      super(props);
     this.state = {
+       registro: 0,
        horas: 0,
        minutos: 0,
        segundos: 0,
        ativo: false,
        voltas: [],
+       id: [],
        clock: 0
      },
     this.pulsoDeClock = this.pulsoDeClock.bind(this);
@@ -52,10 +54,12 @@ class Clock extends Component {
   }
 
   marcarVolta(){
-  //fazer nome da empresa em cima de tudo - 
-  //fazer registros ao lado - criar i++ - arrumar viewbox das voltas - arrumar cores e testar app
+  //Arrumar numero de registro para ser automatico e testar app
     var txt = this.formatar(this.state.horas) + ":" + this.formatar(this.state.minutos) + ":" + this.formatar(this.state.segundos)+"\n";
     this.state.voltas.push(txt);
+    this.forceUpdate();
+    var registro = "Nº Registro:" + this.formatar(this.state.registro) +"\n";
+    this.state.id.push(registro);
     this.forceUpdate();
   }
 
@@ -67,9 +71,9 @@ class Clock extends Component {
     this.pararRelogio();
     this.setState({segundos:0,minutos:0, horas:0});
 
-    if(this.state.voltas.length>0){
-      this.state.voltas.push('-------------- \n');
-    }
+    // if(this.state.voltas.length>0){
+    //   this.state.voltas.push('-------------- \n');
+    // }
 }
 
   trocarTempo(){
@@ -83,7 +87,7 @@ render()
   return(
     <ScrollView>
     <View style={styles.body}>
-            <Text style={styles.text}>Cronômetro</Text>
+            <Text style={styles.text}>AngelsForce</Text>
       {/* <Image source={require('./images/relogio.png')} /> */}
       <Text style={styles.clock}>{cronometerText}</Text>
         <View style={styles.button_area}>
@@ -97,7 +101,10 @@ render()
 
       </View>
       <View style={styles.saveBox}>
-        <Text>
+      <Text style={styles.saveRegister}>
+          {this.state.id}
+        </Text>
+        <Text style={styles.saveText}>
           {this.state.voltas}
         </Text>
       </View>
@@ -198,29 +205,29 @@ export default Clock;
 
 const styles = StyleSheet.create({
   body:{
-    paddingTop:150,
+    paddingTop:100,
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-    backgroundColor:'#8E48FF'
+    backgroundColor:'#000000'
   }, 
   clock:{
-    color:'#00FCFF',
+    color:'#FFFFFF',
     fontSize:30,
     fontWeight:'bold',
     backgroundColor:'transparent',
-    marginTop: -150
+    marginTop: 40
   },
   button_area:{
     flexDirection:'row',
     height:50,
-    marginTop:120
+    marginTop:80
   },
   button:{
     flex:1,
     justifyContent:'center',
     alignItems:'center',
-    backgroundColor:'#00FCFF',
+    backgroundColor:'#9000FA',
     width: 300,
     height:40,
     margin:10,
@@ -234,12 +241,26 @@ const styles = StyleSheet.create({
   text:{
     fontSize: 30,
     fontWeight:'bold',
-    color:'#FFFFFF',
-    paddingBottom: 25
+    color:'#FF23A6',
+    paddingBottom: 25,
+    marginTop: -50
+  },
+  saveText:{
+    fontSize: 20,
+    fontWeight:'bold',
+    color:'#FF23A6',
+    marginLeft: 30
+  },
+  saveRegister:{
+    fontSize: 20,
+    fontWeight:'bold',
+    color:'#FF23A6',
+    marginLeft: 0
   },
   saveBox:{
-    marginTop: 40,
+    marginTop: 50,
     flexDirection:'row',
-    height:248
+    height:248,
+    color:"#FFFFFF"
   }
 });
