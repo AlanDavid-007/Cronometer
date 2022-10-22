@@ -1,5 +1,5 @@
 import React, { Component, useStat, SetStateAction } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Image, SafeAreaView } from 'react-native';
 
 
 class Clock extends Component {
@@ -32,6 +32,7 @@ class Clock extends Component {
     var h = this.state.horas;
     var m = this.state.minutos;
      var s = this.state.segundos;
+     var r = this.state.registro;
     if(s<59){
        s++;
      } else {
@@ -55,11 +56,16 @@ class Clock extends Component {
 
   marcarVolta(){
   //Arrumar numero de registro para ser automatico e testar app
+  var r = this.state.registro;
+  if(r<1000000000000000){
+    r++;
+    var registros = "Nº Registro:" + this.formatar(r) +"\n";
+    this.state.id.push(registros);
+    this.forceUpdate();
+  }
+  this.setState({registro:r})
     var txt = this.formatar(this.state.horas) + ":" + this.formatar(this.state.minutos) + ":" + this.formatar(this.state.segundos)+"\n";
     this.state.voltas.push(txt);
-    this.forceUpdate();
-    var registro = "Nº Registro:" + this.formatar(this.state.registro) +"\n";
-    this.state.id.push(registro);
     this.forceUpdate();
   }
 
@@ -84,7 +90,9 @@ render()
     var txtMinutos = this.formatar(this.state.minutos);
     var txtSegundos = this.formatar(this.state.segundos);
     var cronometerText = txtHoras + "h" + txtMinutos + "min" + txtSegundos + "s";
+    // Arrumar ScrollView para aumentar conforme aumenta caixa
   return(
+    <SafeAreaView>
     <ScrollView>
     <View style={styles.body}>
             <Text style={styles.text}>AngelsForce</Text>
@@ -112,6 +120,7 @@ render()
   
   
   </ScrollView>
+  </SafeAreaView>
   )
 }
 }
