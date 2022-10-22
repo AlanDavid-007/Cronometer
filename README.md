@@ -7,6 +7,7 @@ Here is the second react native app that i did for my course.
 - [Overview](#overview)
   - [The challenge](#the-challenge)
   - [Built with](#built-with)
+  - [Screenshot](#Screenshot)
 - [Author](#author)
 
 ## Overview
@@ -24,3 +25,8 @@ Cronometer App with start, pause, stop and save the time features of the clock.
 ## Author
 
 - Github - [#MyProfile](https://github.com/AlanDavid-007/Cronometer/)
+
+### Screenshot
+
+![First Slide](./Cronometer/images/Home.png)
+![Second Slide](./Cronometer/images/Register.png)
