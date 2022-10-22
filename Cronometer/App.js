@@ -82,7 +82,12 @@ class Clock extends Component {
     // }
 }
 
-  trocarTempo(){
+  limparSave(){
+    if( this.state.voltas.length > 0 && this.state.id.length > 0){
+      this.state.voltas = this.state.voltas.filter(item => item > 100000000000);
+      this.state.id = this.state.id.filter(item => item > 100000000000);
+      this.state.registro = 0;
+    }
   }
 render()
 {
@@ -91,6 +96,20 @@ render()
     var txtSegundos = this.formatar(this.state.segundos);
     var cronometerText = txtHoras + "h" + txtMinutos + "min" + txtSegundos + "s";
     // Arrumar ScrollView para aumentar conforme aumenta caixa
+    if(this.state.voltas.length > 13 && this.state.voltas.length <= 27 && this.state.id.length > 13 && this.state.id.length <= 27){
+      styles.saveBox = {marginTop: 50,
+        flexDirection:'row',
+        height:500,
+        color:"#FFFFFF"};
+    } else{
+      if(this.state.voltas.length > 27 && this.state.voltas.length <= 41 && this.state.id.length > 13 && this.state.id.length <= 41){
+        styles.saveBox = {marginTop: 50,
+          flexDirection:'row',
+          height:752,
+          color:"#FFFFFF"};
+      }
+    
+    }
   return(
     <SafeAreaView>
     <ScrollView>
@@ -108,6 +127,9 @@ render()
           </TouchableOpacity>
 
       </View>
+      <TouchableOpacity style={styles.button} onPress={() => { this.limparSave(); this.zerarRelogio();}}>
+          <Text style={styles.button_text}>Limpar registros</Text>
+          </TouchableOpacity>
       <View style={styles.saveBox}>
       <Text style={styles.saveRegister}>
           {this.state.id}
@@ -255,13 +277,13 @@ const styles = StyleSheet.create({
     marginTop: -50
   },
   saveText:{
-    fontSize: 20,
+    fontSize: 15,
     fontWeight:'bold',
     color:'#FF23A6',
-    marginLeft: 30
+    marginLeft: 20
   },
   saveRegister:{
-    fontSize: 20,
+    fontSize: 15,
     fontWeight:'bold',
     color:'#FF23A6',
     marginLeft: 0
