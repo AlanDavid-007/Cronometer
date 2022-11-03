@@ -19,6 +19,7 @@ Cronometer App with start, pause, stop and save the time features of the clock.
 ### Built with
 
 - HTML5
+- REACT NATIVE
 - CSS3
 - JS and JSX
 
